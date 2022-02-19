@@ -24,7 +24,7 @@ jobs:
         run: mvn javafx:jlink
       - uses: actions/upload-artifact@v2
         with:
-          name: vtalk-linux
+          name: VTalk-Linux
           path: /home/runner/work/vtalk/vtalk/target/app.zip
           retention-days: 1
 
@@ -44,7 +44,7 @@ jobs:
         run: mvn javafx:jlink
       - uses: actions/upload-artifact@v2
         with:
-          name: vtalk-mac
+          name: VTalk-macOSX
           path: /Users/runner/work/vtalk/vtalk/target/app.zip
           retention-days: 1
 
@@ -64,6 +64,6 @@ jobs:
         run: mvn javafx:jlink
       - uses: actions/upload-artifact@v2
         with:
-          name: vtalk-win
+          name: VTalk-Windows
           path: D:\a\vtalk\vtalk\target\app.zip
           retention-days: 1
