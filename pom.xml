@@ -74,6 +74,9 @@
                             <noManPages>true</noManPages>
                             <stripDebug>true</stripDebug>
                             <noHeaderFiles>true</noHeaderFiles>
+                            <options>
+                                <option>-XX:+UseZGC</option>
+                            </options>
                         </configuration>
                     </execution>
                 </executions>
