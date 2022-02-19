@@ -13,7 +13,18 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.8.2</junit.version>
         <javafx.version>17.0.2</javafx.version>
+        <gluonfx.maven.plugin.version>1.0.12</gluonfx.maven.plugin.version>
+        <main.class>io.github.vertxchina.vtalk/io.github.vertxchina.vtalk.HelloApplication</main.class>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>pi</id>
+            <properties>
+                <gluonfx.target>linux-aarch64</gluonfx.target>
+            </properties>
+        </profile>
+    </profiles>
 
     <dependencies>
         <dependency>
@@ -56,8 +67,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>io.github.vertxchina.vtalk/io.github.vertxchina.vtalk.HelloApplication
-                            </mainClass>
+                            <mainClass>${main.class}</mainClass>
                             <launcher>VTalk</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
@@ -68,6 +78,40 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>com.gluonhq</groupId>
+                <artifactId>gluonfx-maven-plugin</artifactId>
+                <version>${gluonfx.maven.plugin.version}</version>
+                <configuration>
+                    <verbose>true</verbose>
+                    <target>${gluonfx.target}</target>
+                    <attachList>
+                        <list>display</list>
+                        <list>lifecycle</list>
+                        <list>statusbar</list>
+                        <list>storage</list>
+                    </attachList>
+                    <mainClass>${main.class}</mainClass>
+<!--                    <appIdentifier>${app.identifier}</appIdentifier>-->
+<!--                    <releaseConfiguration>-->
+<!--                        <vendor>Gluon</vendor>-->
+<!--                        <description>${app.description}</description>-->
+<!--                        <packageType>${package.type}</packageType>-->
+<!--                        &lt;!&ndash; for macOS/iOS &ndash;&gt;-->
+<!--                        <macAppStore>${mac.app.store}</macAppStore>-->
+<!--                        <bundleShortVersion>${bundle.short.version}</bundleShortVersion>-->
+<!--                        <bundleVersion>${bundle.version}</bundleVersion>-->
+<!--                        &lt;!&ndash; for Android &ndash;&gt;-->
+<!--                        <versionCode>${version.code}</versionCode>-->
+<!--                        <providedKeyStorePath>${provided.keystore.path}</providedKeyStorePath>-->
+<!--                        <providedKeyStorePassword>${provided.keystore.password}</providedKeyStorePassword>-->
+<!--                        <providedKeyAlias>${provided.key.alias}</providedKeyAlias>-->
+<!--                        <providedKeyAliasPassword>${provided.key.alias.password}</providedKeyAliasPassword>-->
+<!--                    </releaseConfiguration>-->
+                </configuration>
+            </plugin>
         </plugins>
     </build>
+
+
 </project>
