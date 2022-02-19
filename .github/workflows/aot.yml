@@ -2,7 +2,9 @@ name: VTalk AOT build(generated native code)
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
 
