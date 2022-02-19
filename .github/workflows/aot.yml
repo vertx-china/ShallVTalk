@@ -39,3 +39,4 @@ jobs:
         with:
           name: VTalk-Raspberry-Pi
           path: staging
+          retention-days: 1
