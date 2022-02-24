@@ -93,7 +93,7 @@
                 <artifactId>gluonfx-maven-plugin</artifactId>
                 <version>${gluonfx.maven.plugin.version}</version>
                 <configuration>
-                    <verbose>true</verbose>
+<!--                    <verbose>true</verbose>-->
                     <target>${gluonfx.target}</target>
                     <mainClass>${main.class}</mainClass>
                 </configuration>
