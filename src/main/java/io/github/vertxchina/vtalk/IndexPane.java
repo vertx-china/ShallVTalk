@@ -8,6 +8,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+
 public class IndexPane extends FlowPane {
   public IndexPane() {
     this.setOrientation(Orientation.VERTICAL);
@@ -29,7 +34,12 @@ public class IndexPane extends FlowPane {
     connect.setOnAction(e -> {
       var server = serverTextField.getText();
       var port = portTextField.getNumber();
-      System.out.println("connect to "+server+":"+port);
+      this.setDisable(true);
+      var service = new ConnectionService(server, port);
+      service.setOnSucceeded(s -> this.setDisable(false));
+      service.setOnCancelled(s -> this.setDisable(false));
+      service.setOnFailed(s -> this.setDisable(false));
+      service.start();
     });
   }
 }
