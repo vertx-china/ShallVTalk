@@ -28,7 +28,7 @@ public class IndexPane extends FlowPane {
     exit.setOnAction(e -> System.exit(0));
     connect.setOnAction(e -> {
       var server = serverTextField.getText();
-      var port = Integer.parseInt(portTextField.getText());
+      var port = portTextField.getNumber();
       System.out.println("connect to "+server+":"+port);
     });
   }
