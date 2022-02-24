@@ -1,5 +1,6 @@
 package io.github.vertxchina.vtalk;
 
+import io.github.vertxchina.components.NumberTextField;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
@@ -14,7 +15,7 @@ public class IndexPane extends FlowPane {
     this.setPadding(new Insets(10));
     var serverTextField = new TextField("localhost");
     serverTextField.setPromptText("Server e.g. 127.0.0.1, localhost");
-    var portTextField = new TextField("32167");
+    var portTextField = new NumberTextField(32167);
     portTextField.setPromptText("Port e.g. 8080");
     var hbox = new HBox();
     hbox.setSpacing(20);
@@ -23,5 +24,12 @@ public class IndexPane extends FlowPane {
     var exit = new Button("退出");
     hbox.getChildren().addAll(connect,exit);
     this.getChildren().addAll(serverTextField,portTextField,hbox);
+
+    exit.setOnAction(e -> System.exit(0));
+    connect.setOnAction(e -> {
+      var server = serverTextField.getText();
+      var port = Integer.parseInt(portTextField.getText());
+      System.out.println("connect to "+server+":"+port);
+    });
   }
 }
