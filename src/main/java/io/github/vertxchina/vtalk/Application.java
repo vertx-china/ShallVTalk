@@ -12,9 +12,12 @@ public class Application extends javafx.application.Application {
     stage.setTitle("Shall we talk?");
     stage.setScene(scene);
     stage.show();
+    stage.sizeToScene();
   }
 
   public static void main(String[] args) {
     launch(Application.class, args);
   }
+
+
 }

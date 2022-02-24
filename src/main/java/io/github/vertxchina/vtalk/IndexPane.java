@@ -7,16 +7,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-
-public class IndexPane extends FlowPane {
+public class IndexPane extends VBox {
   public IndexPane() {
-    this.setOrientation(Orientation.VERTICAL);
-    this.setVgap(10);
+    this.setSpacing(20);
     this.setPadding(new Insets(10));
     var serverTextField = new TextField("localhost");
     serverTextField.setPromptText("Server e.g. 127.0.0.1, localhost");
@@ -24,7 +19,7 @@ public class IndexPane extends FlowPane {
     portTextField.setPromptText("Port e.g. 8080");
     var hbox = new HBox();
     hbox.setSpacing(20);
-    hbox.setPadding(new Insets(10,10,10,20));
+    hbox.setPadding(new Insets(0,10,10,20));
     var connect = new Button("连接");
     var exit = new Button("退出");
     hbox.getChildren().addAll(connect,exit);
