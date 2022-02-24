@@ -32,7 +32,7 @@ jobs:
         run: mvn -Ppi gluonfx:build gluonfx:package
 
       - name: Copy native image to staging
-        run: cp -r target/gluonfx/aarch64-linux/VTalk* staging
+        run: cp -r target/gluonfx/aarch64-linux/ShallVTalk* staging
 
       - name: Upload
         uses: actions/upload-artifact@v2
