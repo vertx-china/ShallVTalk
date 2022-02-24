@@ -14,7 +14,8 @@
         <junit.version>5.8.2</junit.version>
         <javafx.version>17.0.2</javafx.version>
         <gluonfx.maven.plugin.version>1.0.12</gluonfx.maven.plugin.version>
-        <main.class>io.github.vertxchina.vtalk/io.github.vertxchina.vtalk.HelloApplication</main.class>
+        <module.name>io.github.vertxchina.vtalk</module.name>
+        <main.class>io.github.vertxchina.vtalk.HelloApplication</main.class>
     </properties>
 
     <profiles>
@@ -73,7 +74,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>${main.class}</mainClass>
+                            <mainClass>${module.name}/${main.class}</mainClass>
                             <launcher>VTalk</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
