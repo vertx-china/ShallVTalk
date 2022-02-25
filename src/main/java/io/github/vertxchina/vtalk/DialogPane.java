@@ -26,17 +26,14 @@ public class DialogPane extends BorderPane {
     var textArea = new TextArea();
 
     simpleStringProperty.addListener((o,oldValue, newValue)->{
-      Platform.runLater(() ->{
-        //update ui components here
-        try {
-          JsonNode node = mapper.readTree(newValue);
-          var message = node.get("message");
-          var msg = message == null ? "": message.asText();
-          textArea.appendText(msg+"\r\n");
-        }catch (Exception e){
-          e.printStackTrace();
-        }
-      });
+      try {
+        JsonNode node = mapper.readTree(newValue);
+        var message = node.get("message");
+        var msg = message == null ? "": message.asText();
+        Platform.runLater(() -> textArea.appendText(msg+"\r\n"));
+      }catch (Exception e){
+        e.printStackTrace();
+      }
     });
 
     var textfield = new TextField();
