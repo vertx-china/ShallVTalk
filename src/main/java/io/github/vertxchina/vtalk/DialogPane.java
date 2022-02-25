@@ -1,10 +1,12 @@
 package io.github.vertxchina.vtalk;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
@@ -16,22 +18,30 @@ import java.net.Socket;
 public class DialogPane extends BorderPane {
   final public SimpleStringProperty simpleStringProperty = new SimpleStringProperty();
 
+  ObjectMapper mapper = new ObjectMapper();
   public DialogPane(Socket socket) {
     Rectangle2D screenBounds = Screen.getPrimary().getBounds();
     this.setPrefSize(screenBounds.getWidth()*3/4, screenBounds.getHeight()*3/4);
 
+    var textArea = new TextArea();
+
     simpleStringProperty.addListener((o,oldValue, newValue)->{
       Platform.runLater(() ->{
         //update ui components here
-        System.out.println(newValue);
+        try {
+          JsonNode node = mapper.readTree(newValue);
+          var message = node.get("message");
+          var msg = message == null ? "": message.asText();
+          textArea.appendText(msg+"\r\n");
+        }catch (Exception e){
+          e.printStackTrace();
+        }
       });
     });
 
     var textfield = new TextField();
     textfield.setOnKeyPressed(v ->{
       if(v.getCode()== KeyCode.ENTER){
-        System.out.println("entered");
-        ObjectMapper mapper = new ObjectMapper();
         ObjectNode message = mapper.createObjectNode();
         message.put("message",textfield.getText());
         try{
@@ -46,6 +56,7 @@ public class DialogPane extends BorderPane {
         }
       }
     });
+    this.setCenter(textArea);
     this.setBottom(textfield);
   }
 }
