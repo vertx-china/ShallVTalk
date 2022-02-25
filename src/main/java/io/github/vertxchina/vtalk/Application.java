@@ -1,5 +1,6 @@
 package io.github.vertxchina.vtalk;
 
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 

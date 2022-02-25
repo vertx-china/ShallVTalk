@@ -1,6 +1,8 @@
 package io.github.vertxchina.vtalk;
 
 import io.github.vertxchina.nodes.NumberTextField;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -28,10 +30,16 @@ public class IndexPane extends VBox {
       var server = serverTextField.getText();
       var port = portTextField.getNumber();
       this.setDisable(true);
-      var service = new ConnectionService(server, port);
-      service.setOnSucceeded(s -> this.setDisable(false));
-      service.setOnCancelled(s -> this.setDisable(false));
-      service.setOnFailed(s -> this.setDisable(false));
+      var service = new ConnectionService(this.getScene(), server, port);
+      service.setOnSucceeded(s -> {
+        this.setDisable(false);
+
+        this.getScene().setRoot(this);
+        this.getScene().getWindow().sizeToScene();
+        this.getScene().getWindow().centerOnScreen();
+      });
+      service.setOnCancelled(service.getOnSucceeded());
+      service.setOnFailed(service.getOnSucceeded());
       service.start();
     });
   }
