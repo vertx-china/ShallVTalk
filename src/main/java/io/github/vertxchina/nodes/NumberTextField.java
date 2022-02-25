@@ -1,4 +1,4 @@
-package io.github.vertxchina.components;
+package io.github.vertxchina.nodes;
 
 import javafx.scene.control.TextField;
 

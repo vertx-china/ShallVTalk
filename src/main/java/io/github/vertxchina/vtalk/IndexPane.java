@@ -1,11 +1,9 @@
 package io.github.vertxchina.vtalk;
 
-import io.github.vertxchina.components.NumberTextField;
+import io.github.vertxchina.nodes.NumberTextField;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
