@@ -27,6 +27,7 @@ public class DialogPane extends BorderPane {
     this.setStyle(GLOBAL_FONT_FAMILY);
 
     var textArea = new TextArea();
+    textArea.setEditable(false);
 
     simpleStringProperty.addListener((o,oldValue, newValue)->{
       try {
