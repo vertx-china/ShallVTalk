@@ -15,6 +15,8 @@ import javafx.stage.Screen;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import static io.github.vertxchina.vtalk.Application.GLOBAL_FONT_FAMILY;
+
 public class DialogPane extends BorderPane {
   final public SimpleStringProperty simpleStringProperty = new SimpleStringProperty();
 
@@ -22,6 +24,7 @@ public class DialogPane extends BorderPane {
   public DialogPane(Socket socket) {
     Rectangle2D screenBounds = Screen.getPrimary().getBounds();
     this.setPrefSize(screenBounds.getWidth()*3/4, screenBounds.getHeight()*3/4);
+    this.setStyle(GLOBAL_FONT_FAMILY);
 
     var textArea = new TextArea();
 
