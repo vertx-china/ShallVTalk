@@ -49,8 +49,9 @@ public class IndexPane extends VBox {
         return;
       }
       this.setDisable(true);
-      var service = new ConnectionService((NavigatableScene)this.getScene(), nickname, server, port);
-      service.setOnSucceeded(s -> ((NavigatableScene)this.getScene()).navigate("/"));
+      var navigatableScene = (NavigatableScene)this.getScene();
+      var service = new ConnectionService(navigatableScene, nickname, server, port);
+      service.setOnSucceeded(s -> navigatableScene.navigate("/"));
       service.setOnCancelled(service.getOnSucceeded());
       service.setOnFailed(service.getOnSucceeded());
       service.start();
