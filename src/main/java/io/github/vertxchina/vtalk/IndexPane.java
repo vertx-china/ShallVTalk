@@ -1,17 +1,18 @@
 package io.github.vertxchina.vtalk;
 
+import io.github.vertxchina.nodes.NavigatableScene;
 import io.github.vertxchina.nodes.NumberTextField;
 import io.github.vertxchina.nodes.PersistentPromptTextField;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.StringBinding;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import static io.github.vertxchina.vtalk.Application.GLOBAL_FONT_FAMILY;
+
 public class IndexPane extends VBox {
   public IndexPane() {
+    this.setStyle(GLOBAL_FONT_FAMILY);
     this.setSpacing(20);
     this.setPadding(new Insets(10));
     var nicknameTextField = new PersistentPromptTextField("");
@@ -48,14 +49,8 @@ public class IndexPane extends VBox {
         return;
       }
       this.setDisable(true);
-      var service = new ConnectionService(this.getScene(), nickname, server, port);
-      service.setOnSucceeded(s -> {
-        this.setDisable(false);
-
-        this.getScene().setRoot(this);
-        this.getScene().getWindow().sizeToScene();
-        this.getScene().getWindow().centerOnScreen();
-      });
+      var service = new ConnectionService((NavigatableScene)this.getScene(), nickname, server, port);
+      service.setOnSucceeded(s -> ((NavigatableScene)this.getScene()).navigate("/"));
       service.setOnCancelled(service.getOnSucceeded());
       service.setOnFailed(service.getOnSucceeded());
       service.start();

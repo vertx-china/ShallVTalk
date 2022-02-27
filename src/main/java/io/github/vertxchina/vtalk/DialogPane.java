@@ -15,6 +15,7 @@ import javafx.stage.Screen;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
 import static io.github.vertxchina.vtalk.Application.GLOBAL_FONT_FAMILY;
 
@@ -23,7 +24,8 @@ public class DialogPane extends BorderPane {
   final public SimpleStringProperty simpleStringProperty = new SimpleStringProperty();
 
   ObjectMapper mapper = new ObjectMapper();
-  public DialogPane(Socket socket) {
+  public DialogPane(Map parameters) {
+    Socket socket = (Socket) parameters.get("socket");
     Rectangle2D screenBounds = Screen.getPrimary().getBounds();
     this.setPrefSize(screenBounds.getWidth()*3/4, screenBounds.getHeight()*3/4);
     this.setStyle(GLOBAL_FONT_FAMILY);

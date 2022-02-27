@@ -1,12 +1,11 @@
 package io.github.vertxchina.vtalk;
 
-import javafx.css.Stylesheet;
-import javafx.scene.Node;
-import javafx.scene.Scene;
+import io.github.vertxchina.nodes.NavigatableScene;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 public class Application extends javafx.application.Application {
   public static Font GLOBAL_FONT;
@@ -14,13 +13,11 @@ public class Application extends javafx.application.Application {
 
   @Override
   public void start(Stage stage) throws IOException {
-    var root = new IndexPane();
-    root.setStyle(GLOBAL_FONT_FAMILY);
-    Scene scene = new Scene(root);
     stage.setTitle("Shall we talk?");
+    var scene = new NavigatableScene((parameters) -> new IndexPane(), new HashMap<>());
+    scene.route("/dialog", DialogPane::new);
     stage.setScene(scene);
     stage.show();
-    stage.sizeToScene();
   }
 
   public static void main(String[] args) {

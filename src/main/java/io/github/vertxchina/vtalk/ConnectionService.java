@@ -1,5 +1,6 @@
 package io.github.vertxchina.vtalk;
 
+import io.github.vertxchina.nodes.NavigatableScene;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Service;
@@ -8,15 +9,16 @@ import javafx.scene.Scene;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.HashMap;
 
 public class ConnectionService extends Service<Void> {
 
-  private final Scene scene;
+  private final NavigatableScene scene;
   private String nickname;
   private final String server;
   private final int port;
 
-  public ConnectionService(Scene scene, String nickname, String server, int port) {
+  public ConnectionService(NavigatableScene scene, String nickname, String server, int port) {
     this.scene = scene;
     this.nickname = nickname;
     this.server = server;
@@ -36,11 +38,11 @@ public class ConnectionService extends Service<Void> {
           final var simpleStringProperty = new SimpleStringProperty();
 
           Platform.runLater(() -> {
-            final var dialogPane = new DialogPane(socket);
-            dialogPane.simpleStringProperty.bindBidirectional(simpleStringProperty);
-            scene.setRoot(dialogPane);
-            scene.getWindow().sizeToScene();
-            scene.getWindow().centerOnScreen();
+            var parameters = new HashMap<>();
+            parameters.put("socket", socket);
+            parameters.put("nickname", nickname);
+            DialogPane dialogPane = (DialogPane)(scene.navigate("/dialog", parameters));
+            dialogPane.simpleStringProperty.bind(simpleStringProperty);
           });
 
           char[] buffer = new char[1024 * 64];
