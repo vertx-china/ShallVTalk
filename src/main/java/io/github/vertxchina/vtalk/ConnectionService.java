@@ -12,11 +12,13 @@ import java.net.Socket;
 public class ConnectionService extends Service<Void> {
 
   private final Scene scene;
+  private String nickname;
   private final String server;
   private final int port;
 
-  public ConnectionService(Scene scene, String server, int port) {
+  public ConnectionService(Scene scene, String nickname, String server, int port) {
     this.scene = scene;
+    this.nickname = nickname;
     this.server = server;
     this.port = port;
   }

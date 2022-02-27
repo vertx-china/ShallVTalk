@@ -1,8 +1,9 @@
 package io.github.vertxchina.vtalk;
 
 import io.github.vertxchina.nodes.NumberTextField;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
+import io.github.vertxchina.nodes.PersistentPromptTextField;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.StringBinding;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -13,24 +14,41 @@ public class IndexPane extends VBox {
   public IndexPane() {
     this.setSpacing(20);
     this.setPadding(new Insets(10));
-    var serverTextField = new TextField("localhost");
-    serverTextField.setPromptText("Server e.g. 127.0.0.1, localhost");
+    var nicknameTextField = new PersistentPromptTextField("");
+    nicknameTextField.setPromptText("请输入昵称");
+    nicknameTextField.requestFocus();
+    var serverTextField = new PersistentPromptTextField("localhost");
+    serverTextField.setPromptText("服务器地址 例如：127.0.0.1, localhost");
     var portTextField = new NumberTextField(32167);
-    portTextField.setPromptText("Port e.g. 8080");
+    portTextField.setPromptText("请输入端口 例如：8080");
     var hbox = new HBox();
     hbox.setSpacing(20);
     hbox.setPadding(new Insets(0,10,10,20));
     var connect = new Button("连接");
     var exit = new Button("退出");
     hbox.getChildren().addAll(connect,exit);
-    this.getChildren().addAll(serverTextField,portTextField,hbox);
+    this.getChildren().addAll(nicknameTextField,serverTextField,portTextField,hbox);
 
     exit.setOnAction(e -> System.exit(0));
     connect.setOnAction(e -> {
-      var server = serverTextField.getText();
+      var nickname = nicknameTextField.getText().trim();
+      if(nickname.isEmpty()){
+        nicknameTextField.requestFocus();
+        return;
+      }
+      var server = serverTextField.getText().trim();
+      if(server.isEmpty()){
+        serverTextField.requestFocus();
+        return;
+      }
       var port = portTextField.getNumber();
+      if(port < 0 || port > 65535){
+        portTextField.clear();
+        portTextField.requestFocus();
+        return;
+      }
       this.setDisable(true);
-      var service = new ConnectionService(this.getScene(), server, port);
+      var service = new ConnectionService(this.getScene(), nickname, server, port);
       service.setOnSucceeded(s -> {
         this.setDisable(false);
 

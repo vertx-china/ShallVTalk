@@ -1,8 +1,6 @@
 package io.github.vertxchina.nodes;
 
-import javafx.scene.control.TextField;
-
-public class NumberTextField extends TextField {
+public class NumberTextField extends PersistentPromptTextField {
   public NumberTextField(int port) {
     this.setText(""+port);
   }
@@ -31,6 +29,7 @@ public class NumberTextField extends TextField {
   }
 
   public int getNumber(){
+    if(this.getText().trim().isEmpty()) return -1;
     return Integer.parseInt(this.getText());
   }
 }
