@@ -6,9 +6,7 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.scene.Scene;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 public class ConnectionService extends Service<Void> {
@@ -28,13 +26,14 @@ public class ConnectionService extends Service<Void> {
     return new Task<Void>() {
       @Override
       protected Void call() throws Exception {
-        try(var socket = new Socket(server, port);
-            var out = new PrintWriter(socket.getOutputStream(), true);
-            var in = new BufferedReader(new InputStreamReader(socket.getInputStream()))){
+        try (var socket = new Socket(server, port);
+             var isr = new InputStreamReader(socket.getInputStream());
+             var in = new BufferedReader(isr);
+             var charArrayWriter = new CharArrayWriter()) {
 
           final var simpleStringProperty = new SimpleStringProperty();
 
-          Platform.runLater(()->{
+          Platform.runLater(() -> {
             final var dialogPane = new DialogPane(socket);
             dialogPane.simpleStringProperty.bindBidirectional(simpleStringProperty);
             scene.setRoot(dialogPane);
@@ -42,11 +41,25 @@ public class ConnectionService extends Service<Void> {
             scene.getWindow().centerOnScreen();
           });
 
-          String inputLine;
-          while ((inputLine = in.readLine()) != null) {
-            simpleStringProperty.set(inputLine);
+          char[] buffer = new char[1024 * 64];
+          int length;
+          while ((length = in.read(buffer)) > -1) {
+            charArrayWriter.write(buffer, 0, length);
+            if (charArrayWriter.size() > 2) {
+              var receivedString = charArrayWriter.toString();
+              if (receivedString.endsWith("\r\n")) {
+                var strings = receivedString.split("\r\n");
+                for (var string : strings) {
+                  if (!string.trim().equals("")) {
+                    simpleStringProperty.set(string);
+                  }
+                }
+                charArrayWriter.reset();
+              }
+            }
           }
-        }catch (Exception exception){
+
+        } catch (Exception exception) {
           exception.printStackTrace();
         }
         return null;

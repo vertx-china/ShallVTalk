@@ -14,10 +14,12 @@ import javafx.stage.Screen;
 
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.time.format.DateTimeFormatter;
 
 import static io.github.vertxchina.vtalk.Application.GLOBAL_FONT_FAMILY;
 
 public class DialogPane extends BorderPane {
+  DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z");
   final public SimpleStringProperty simpleStringProperty = new SimpleStringProperty();
 
   ObjectMapper mapper = new ObjectMapper();
