@@ -40,9 +40,9 @@ public class ConnectionService extends Service<Void> {
           Platform.runLater(() -> {
             var parameters = new HashMap<>();
             parameters.put("socket", socket);
-            parameters.put("nickname", nickname);
             DialogPane dialogPane = (DialogPane)(scene.navigate("/dialog", parameters));
             dialogPane.simpleStringProperty.bind(simpleStringProperty);
+            dialogPane.sendSimpleMessage(socket, "nickname", nickname);
           });
 
           char[] buffer = new char[1024 * 64];
@@ -54,7 +54,7 @@ public class ConnectionService extends Service<Void> {
               if (receivedString.endsWith("\r\n")) {
                 var strings = receivedString.split("\r\n");
                 for (var string : strings) {
-                  if (!string.trim().equals("")) {
+                  if (!string.trim().isEmpty()) {
                     simpleStringProperty.set(string);
                   }
                 }
