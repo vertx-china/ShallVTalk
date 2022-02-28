@@ -1,4 +1,4 @@
-package io.github.vertxchina.vtalk;
+package io.github.vertxchina.vtalk.indexpane;
 
 import io.github.vertxchina.nodes.NavigatableScene;
 import io.github.vertxchina.nodes.NumberTextField;

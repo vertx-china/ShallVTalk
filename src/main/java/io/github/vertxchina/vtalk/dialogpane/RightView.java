@@ -1,4 +1,4 @@
-package io.github.vertxchina.vtalk.dialogPane;
+package io.github.vertxchina.vtalk.dialogpane;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import javafx.application.Platform;

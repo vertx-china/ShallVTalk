@@ -1,7 +1,7 @@
-package io.github.vertxchina.vtalk;
+package io.github.vertxchina.vtalk.indexpane;
 
 import io.github.vertxchina.nodes.NavigatableScene;
-import io.github.vertxchina.vtalk.dialogPane.DialogPane;
+import io.github.vertxchina.vtalk.dialogpane.DialogPane;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Service;

@@ -1,7 +1,8 @@
 package io.github.vertxchina.vtalk;
 
 import io.github.vertxchina.nodes.NavigatableScene;
-import io.github.vertxchina.vtalk.dialogPane.DialogPane;
+import io.github.vertxchina.vtalk.dialogpane.DialogPane;
+import io.github.vertxchina.vtalk.indexpane.IndexPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
