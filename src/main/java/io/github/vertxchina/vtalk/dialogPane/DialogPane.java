@@ -1,10 +1,11 @@
-package io.github.vertxchina.vtalk;
+package io.github.vertxchina.vtalk.dialogPane;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.ListView;
@@ -63,7 +64,6 @@ public class DialogPane extends BorderPane {
             }
           });
         }
-
       }catch (Exception e){
         e.printStackTrace();
       }

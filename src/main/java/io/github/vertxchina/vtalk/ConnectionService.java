@@ -1,11 +1,11 @@
 package io.github.vertxchina.vtalk;
 
 import io.github.vertxchina.nodes.NavigatableScene;
+import io.github.vertxchina.vtalk.dialogPane.DialogPane;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import javafx.scene.Scene;
 
 import java.io.*;
 import java.net.Socket;
