@@ -30,15 +30,15 @@ public class DialogPane extends BorderPane {
     this.setPrefSize(screenBounds.getWidth()*3/4, screenBounds.getHeight()*3/4);
     this.setStyle(GLOBAL_FONT_FAMILY);
 
-    var textArea = new TextArea();
-    textArea.setEditable(false);
+    var chatHistory = new TextArea();
+    chatHistory.setEditable(false);
 
     simpleStringProperty.addListener((o,oldValue, newValue)->{
       try {
         JsonNode node = mapper.readTree(newValue);
         var message = node.get("message");
         var msg = message == null ? "": message.asText();
-        Platform.runLater(() -> textArea.appendText(msg+"\r\n"));
+        Platform.runLater(() -> chatHistory.appendText(msg+"\r\n"));
       }catch (Exception e){
         e.printStackTrace();
       }
@@ -61,7 +61,10 @@ public class DialogPane extends BorderPane {
         }
       }
     });
-    this.setCenter(textArea);
+
+
+
+    this.setCenter(chatHistory);
     this.setBottom(textfield);
   }
 }
