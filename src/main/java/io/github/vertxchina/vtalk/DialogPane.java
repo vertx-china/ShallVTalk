@@ -13,6 +13,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -74,21 +75,27 @@ public class DialogPane extends BorderPane {
       }
     });
 
-    var textfield = new TextField();
-    textfield.setOnKeyPressed(v ->{
-      if(v.getCode()== KeyCode.ENTER){
-        sendSimpleMessage(socket, "message", textfield.getText());
-        textfield.setText("");
+    var textarea = new TextArea();
+    textarea.setPrefHeight(screenBounds.getHeight()/6);
+    textarea.addEventFilter(KeyEvent.KEY_PRESSED, v ->{
+      if(v.getCode() == KeyCode.ENTER){
+        if(v.isShiftDown()){
+          textarea.insertText(textarea.getCaretPosition(),"\n");
+        }else{
+          sendSimpleMessage(socket, "message", textarea.getText());
+          textarea.setText("");
+        }
+        v.consume();
       }
     });
 
     this.setRight(userlist);
     this.setCenter(scrollPane);
-    this.setBottom(textfield);
+    this.setBottom(textarea);
 
     BorderPane.setMargin(scrollPane,new Insets(10,5,5,10));
     BorderPane.setMargin(userlist,new Insets(10,10,5,5));
-    BorderPane.setMargin(textfield,new Insets(5,10,10,10));
+    BorderPane.setMargin(textarea,new Insets(5,10,10,10));
   }
 
   public void appendChatHistory(TextFlow chatHistory, String message){
