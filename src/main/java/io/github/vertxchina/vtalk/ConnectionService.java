@@ -42,7 +42,7 @@ public class ConnectionService extends Service<Void> {
             parameters.put("socket", socket);
             DialogPane dialogPane = (DialogPane)(scene.navigate("/dialog", parameters));
             dialogPane.simpleStringProperty.bind(simpleStringProperty);
-            dialogPane.sendSimpleMessage(socket, "nickname", nickname);
+            dialogPane.sendSimpleMessage("nickname", nickname);
           });
 
           char[] buffer = new char[1024 * 64];
