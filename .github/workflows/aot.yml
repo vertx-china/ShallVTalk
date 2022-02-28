@@ -10,8 +10,6 @@ jobs:
 
   raspbarry-pi-build:
 
-    needs: linux-x64-build
-
     runs-on: ubuntu-latest
 
     steps:
