@@ -9,10 +9,17 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Screen;
 
 import java.io.PrintWriter;
@@ -36,18 +43,21 @@ public class DialogPane extends BorderPane {
     var userlist = new ListView<String>();
     userlist.setPadding(new Insets(10));
 
-    var chatHistory = new TextArea();
-    chatHistory.setEditable(false);
+    var chatHistory = new TextFlow();
+    var scrollPane = new ScrollPane(chatHistory);
+    scrollPane.setPadding(new Insets(10));
+    scrollPane.setStyle("-fx-background: #FFFFFF");
+    scrollPane.vvalueProperty().bind(chatHistory.heightProperty());
 
     simpleStringProperty.addListener((o,oldValue, newValue)->{
       try {
         JsonNode node = mapper.readTree(newValue);
         if(node.has("nickname"))
-          Platform.runLater(() -> chatHistory.appendText(node.get("nickname").asText("") +" "));
+          appendChatHistory(chatHistory, node.get("nickname").asText("") +" ");
         if(node.has("time"))
-          Platform.runLater(() -> chatHistory.appendText(node.get("time").asText("") + "\r\n"));
+          appendChatHistory(chatHistory,node.get("time").asText("") + "\r\n");
         if(node.has("message"))
-          Platform.runLater(() -> chatHistory.appendText(node.get("message").asText("")+"\r\n\r\n"));
+          appendChatHistory(chatHistory,node.get("message").asText("")+"\r\n\r\n");
         if(node.has("nicknames")){
           Platform.runLater(()->{
             userlist.getItems().clear();
@@ -73,12 +83,19 @@ public class DialogPane extends BorderPane {
     });
 
     this.setRight(userlist);
-    this.setCenter(chatHistory);
+    this.setCenter(scrollPane);
     this.setBottom(textfield);
 
-    BorderPane.setMargin(chatHistory,new Insets(10,5,5,10));
+    BorderPane.setMargin(scrollPane,new Insets(10,5,5,10));
     BorderPane.setMargin(userlist,new Insets(10,10,5,5));
     BorderPane.setMargin(textfield,new Insets(5,10,10,10));
+  }
+
+  public void appendChatHistory(TextFlow chatHistory, String message){
+    Platform.runLater(() -> {
+      var text = new Text(message);
+      chatHistory.getChildren().add(text);
+    });
   }
 
   public void sendSimpleMessage(Socket socket, String key, String value){
