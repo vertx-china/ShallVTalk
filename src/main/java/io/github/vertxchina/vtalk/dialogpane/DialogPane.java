@@ -15,7 +15,6 @@ import java.util.Map;
 import static io.github.vertxchina.vtalk.Application.GLOBAL_FONT_FAMILY;
 
 public class DialogPane extends BorderPane {
-  DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z");
   final public SimpleStringProperty simpleStringProperty = new SimpleStringProperty();
   ObjectMapper mapper = new ObjectMapper();
 
@@ -40,15 +39,8 @@ public class DialogPane extends BorderPane {
     simpleStringProperty.addListener((o, oldValue, newValue) -> {
       try {
         JsonNode node = mapper.readTree(newValue);
-        if (node.has("nickname"))
-          centerPane.appendChatHistory(node.get("nickname").asText("") + " ");
-        if (node.has("time"))
-          centerPane.appendChatHistory(node.get("time").asText("") + "\r\n");
-        if (node.has("message"))
-          centerPane.appendChatHistory(node.get("message").asText("") + "\r\n\r\n");
-        if (node.has("nicknames")) {
-          rightUserList.updateList(node);
-        }
+        if (node.has("message")) centerPane.appendChatHistory(node);
+        if (node.has("nicknames")) rightUserList.updateList(node);
       } catch (Exception e) {
         e.printStackTrace();
       }
