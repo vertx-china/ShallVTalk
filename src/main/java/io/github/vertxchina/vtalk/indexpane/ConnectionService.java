@@ -40,9 +40,9 @@ public class ConnectionService extends Service<Void> {
           Platform.runLater(() -> {
             var parameters = new HashMap<>();
             parameters.put("socket", socket);
+            parameters.put("nickname", nickname);
             DialogPane dialogPane = (DialogPane)(scene.navigate("/dialog", parameters));
             dialogPane.simpleStringProperty.bind(simpleStringProperty);
-            dialogPane.sendSimpleMessage("nickname", nickname);
           });
 
           char[] buffer = new char[1024 * 64];

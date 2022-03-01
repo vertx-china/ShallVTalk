@@ -7,6 +7,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
@@ -23,6 +24,7 @@ public class BottomPane extends HBox {
       e.printStackTrace();
       try {
         socket.close();
+        if(printWriter!=null) printWriter.close();
       }catch (Exception ee){
         ee.printStackTrace();
       }

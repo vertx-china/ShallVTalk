@@ -29,6 +29,14 @@ public class DialogPane extends BorderPane {
     var centerPane = new CenterPane();
     var bottomPane = new BottomPane(socket);
 
+    this.setRight(rightUserList);
+    this.setCenter(centerPane);
+    this.setBottom(bottomPane);
+
+    BorderPane.setMargin(centerPane, new Insets(10, 5, 5, 10));
+    BorderPane.setMargin(rightUserList, new Insets(10, 10, 5, 5));
+    BorderPane.setMargin(bottomPane, new Insets(5, 10, 10, 10));
+
     simpleStringProperty.addListener((o, oldValue, newValue) -> {
       try {
         JsonNode node = mapper.readTree(newValue);
@@ -46,17 +54,6 @@ public class DialogPane extends BorderPane {
       }
     });
 
-    this.setRight(rightUserList);
-    this.setCenter(centerPane);
-    this.setBottom(bottomPane);
-
-    BorderPane.setMargin(centerPane, new Insets(10, 5, 5, 10));
-    BorderPane.setMargin(rightUserList, new Insets(10, 10, 5, 5));
-    BorderPane.setMargin(bottomPane, new Insets(5, 10, 10, 10));
-  }
-
-  public void sendSimpleMessage(String key, String value) {
-    var bottomPane = (BottomPane) this.getBottom();
-    bottomPane.sendSimpleMessage(key, value);
+    bottomPane.sendSimpleMessage("nickname", parameters.get("nickname").toString());
   }
 }
