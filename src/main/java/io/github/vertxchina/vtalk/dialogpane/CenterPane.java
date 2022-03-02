@@ -26,18 +26,19 @@ public class CenterPane extends ScrollPane {
     this.vvalueProperty().bind(chatHistory.heightProperty());
   }
 
-  public void appendChatHistory(JsonNode node){
-    var nickname = node.path("nickname").asText("我");
+  public void appendChatHistory(JsonNode node) {
+    var nickname = node.path("nickname");
     var time = node.path("time").asText(ZonedDateTime.now().format(timeFormatter));
     var color = node.path("color").asText("#000");
     var label = new Label();
-    label.setText(nickname + " " + time + System.lineSeparator() + node.path("message").asText(""));
+    var nn = nickname.isMissingNode() ? "我" : nickname.asText();
+    label.setText(nn + " " + time + System.lineSeparator() + node.path("message").asText(" "));
     label.setTextFill(Color.web(color));
     label.setPadding(new Insets(5));
     label.setLineSpacing(3);
-    if(nickname.equals("我"))
-      label.setBackground(new Background(new BackgroundFill(Color.web("#b3e6b3"), new CornerRadii(5) , Insets.EMPTY)));
-    Platform.runLater(()->
-      chatHistory.getChildren().addAll(label, new Text(System.lineSeparator()+System.lineSeparator())));//nameText, new Text(System.lineSeparator()), msgLabel
+    if (nickname.isMissingNode())
+      label.setBackground(new Background(new BackgroundFill(Color.web("#b3e6b3"), new CornerRadii(5), Insets.EMPTY)));
+    Platform.runLater(() ->
+        chatHistory.getChildren().addAll(label, new Text(System.lineSeparator() + System.lineSeparator())));//nameText, new Text(System.lineSeparator()), msgLabel
   }
 }
