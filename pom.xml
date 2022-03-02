@@ -81,7 +81,7 @@
                             <stripDebug>true</stripDebug>
                             <noHeaderFiles>true</noHeaderFiles>
                             <options>
-                                <option>-XX:+UseZGC</option>
+                                <option>-XX:+UseZGC -Dfile.encoding=UTF-8</option>
                             </options>
                         </configuration>
                     </execution>
