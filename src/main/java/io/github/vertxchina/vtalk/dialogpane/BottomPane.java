@@ -2,6 +2,7 @@ package io.github.vertxchina.vtalk.dialogpane;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
@@ -13,12 +14,14 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class BottomPane extends HBox {
+  CenterPane centerPane;
   TextArea textarea = new TextArea();
   ColorPicker colorPicker = new ColorPicker(Color.BLACK);
   ObjectMapper mapper = new ObjectMapper();
   PrintWriter printWriter;
 
-  public BottomPane(Socket socket) {
+  public BottomPane(Socket socket, CenterPane centerPane) {
+    this.centerPane = centerPane;
     try{
       var outputStream = socket.getOutputStream();
       printWriter = new PrintWriter(outputStream);
@@ -32,18 +35,20 @@ public class BottomPane extends HBox {
       }
     }
 
-    textarea.addEventFilter(KeyEvent.KEY_PRESSED, v ->{
+    textarea.addEventFilter(KeyEvent.KEY_PRESSED, v -> {
       if(v.getCode() == KeyCode.ENTER){
         if(v.isShiftDown()){
           textarea.insertText(textarea.getCaretPosition(),"\n");
         }else{
           if(colorPicker.getValue().equals(Color.BLACK)){
-            sendSimpleMessage("message", textarea.getText());
+            var sentJson = sendSimpleMessage("message", textarea.getText());
+            centerPane.appendChatHistory(sentJson.put("id","_"));
           }else{
             ObjectNode objectNode = mapper.createObjectNode();
             objectNode.put("message", textarea.getText());
             objectNode.put("color", toWebColorCode(colorPicker.getValue()));
             sendJson(objectNode);
+            centerPane.appendChatHistory(objectNode.put("id","_"));
           }
           textarea.setText("");
         }
@@ -60,10 +65,11 @@ public class BottomPane extends HBox {
     this.getChildren().addAll(textarea, colorPicker);
   }
 
-  public void sendSimpleMessage(String key, String value){
+  public ObjectNode sendSimpleMessage(String key, String value){
     ObjectNode message = mapper.createObjectNode();
     message.put(key, value);
     sendJson(message);
+    return message;
   }
 
   public void sendJson(ObjectNode jsonNode){

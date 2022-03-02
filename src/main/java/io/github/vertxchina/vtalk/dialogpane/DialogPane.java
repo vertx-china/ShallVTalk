@@ -26,7 +26,7 @@ public class DialogPane extends BorderPane {
 
     var rightUserList = new RightView();
     var centerPane = new CenterPane();
-    var bottomPane = new BottomPane(socket);
+    var bottomPane = new BottomPane(socket, centerPane);
 
     this.setRight(rightUserList);
     this.setCenter(centerPane);
