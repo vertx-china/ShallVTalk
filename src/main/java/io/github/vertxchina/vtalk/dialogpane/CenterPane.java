@@ -1,19 +1,17 @@
 package io.github.vertxchina.vtalk.dialogpane;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import io.github.vertxchina.vtalk.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
-import javafx.scene.control.Label;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
-import java.net.URL;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -31,23 +29,40 @@ public class CenterPane extends ScrollPane {
   public void appendChatHistory(JsonNode node) {
     var nickname = node.path("nickname");
     var time = node.path("time").asText(ZonedDateTime.now().format(timeFormatter));
-    var msgHead = new Label();
-    var msgBody = new Label();
+    var msgHead = new Text();
+    var wholeMessage = new VBox();
+    wholeMessage.setPadding(new Insets(5));
+    wholeMessage.setSpacing(3);
+
     var nn = nickname.isMissingNode() ? "我" : nickname.asText();
+    var color = node.path("color").asText("#000");
     msgHead.setText(nn + " " + time);
+    msgHead.setFill(Color.web(color));
+
     var message = node.path("message").asText(" ").trim();
-    if(message.startsWith("http")&&(message.endsWith("png")||message.endsWith("jpg")||message.endsWith("gif"))){
-      msgBody.setGraphic(new ImageView(message));
+    if(message.startsWith("http")){
+      if(message.endsWith("png")||message.endsWith("jpg")||message.endsWith("gif")){
+        var imageview = new ImageView(message);
+        if(imageview.getImage().isError())
+          wholeMessage.getChildren().addAll(msgHead,generateHyperLink(message));
+        else
+          wholeMessage.getChildren().addAll(msgHead,imageview);
+      }else
+        wholeMessage.getChildren().addAll(msgHead,generateHyperLink(message));
     }else{
-      msgBody.setText(message);
-      var color = node.path("color").asText("#000");
-      msgBody.setTextFill(Color.web(color));
+      var text = new Text(message);
+      text.setFill(Color.web(color));
+      wholeMessage.getChildren().addAll(msgHead,text);
     }
-    msgBody.setPadding(new Insets(5));
-    msgBody.setLineSpacing(3);
+
     if (nickname.isMissingNode())
-      msgBody.setBackground(new Background(new BackgroundFill(Color.web("#b3e6b3"), new CornerRadii(5), Insets.EMPTY)));
-    Platform.runLater(() ->
-        chatHistory.getChildren().addAll(msgHead, new Text(System.lineSeparator()), msgBody, new Text(System.lineSeparator() + System.lineSeparator())));//nameText, new Text(System.lineSeparator()), msgLabel
+      wholeMessage.setBackground(new Background(new BackgroundFill(Color.web("#b3e6b3"), new CornerRadii(5), Insets.EMPTY)));
+    Platform.runLater(() -> chatHistory.getChildren().addAll(wholeMessage, new Text(System.lineSeparator()+System.lineSeparator())));
+  }
+
+  private Hyperlink generateHyperLink(String address){
+    var hyperlink = new Hyperlink(address);
+    hyperlink.setOnAction(e -> Application.hostServices.showDocument(address));
+    return hyperlink;
   }
 }
