@@ -72,6 +72,11 @@ public class BottomPane extends HBox {
     return message;
   }
 
+  public void sentDebugMessage(String rawString){
+    printWriter.write(rawString + "\r\n");
+    printWriter.flush();
+  }
+
   public void sendJson(ObjectNode jsonNode){
     try {
       var json = mapper.writeValueAsString(jsonNode);
