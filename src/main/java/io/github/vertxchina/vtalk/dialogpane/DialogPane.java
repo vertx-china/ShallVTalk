@@ -9,7 +9,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Screen;
 
 import java.net.Socket;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 import static io.github.vertxchina.vtalk.Application.GLOBAL_FONT_FAMILY;

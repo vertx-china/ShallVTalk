@@ -41,7 +41,7 @@ public class CenterPane extends ScrollPane {
 
     var message = node.path("message").asText(" ").trim();
     if(message.startsWith("http")){
-      if(message.endsWith("png")||message.endsWith("jpg")||message.endsWith("gif")){
+      if(message.endsWith("png")||message.endsWith("jpg")||message.endsWith("jpeg")||message.endsWith("gif")){
         var imageview = new ImageView(message);
         if(imageview.getImage().isError())
           wholeMessage.getChildren().addAll(msgHead,generateHyperLink(message));
