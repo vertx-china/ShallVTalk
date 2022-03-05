@@ -1,8 +1,8 @@
 package io.github.vertxchina.vtalk.dialogpane;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
@@ -50,7 +50,7 @@ public class BottomPane extends HBox {
             sendJson(objectNode);
             centerPane.appendChatHistory(objectNode.put("id","_"));
           }
-          textarea.setText("");
+          textarea.clear();
         }
         v.consume();
       }

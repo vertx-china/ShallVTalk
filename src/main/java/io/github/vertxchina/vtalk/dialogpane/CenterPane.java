@@ -29,31 +29,20 @@ public class CenterPane extends ScrollPane {
   public void appendChatHistory(JsonNode node) {
     var nickname = node.path("nickname");
     var time = node.path("time").asText(ZonedDateTime.now().format(timeFormatter));
-    var msgHead = new Text();
+
     var wholeMessage = new VBox();
     wholeMessage.setPadding(new Insets(5));
     wholeMessage.setSpacing(3);
 
+    var msgHead = new Text();
     var nn = nickname.isMissingNode() ? "我" : nickname.asText();
     var color = node.path("color").asText("#000");
     msgHead.setText(nn + " " + time);
     msgHead.setFill(Color.web(color));
+    wholeMessage.getChildren().addAll(msgHead);
 
-    var message = node.path("message").asText(" ").trim();
-    if(message.startsWith("http")){
-      if(message.endsWith("png")||message.endsWith("jpg")||message.endsWith("jpeg")||message.endsWith("gif")){
-        var imageview = new ImageView(message);
-        if(imageview.getImage().isError())
-          wholeMessage.getChildren().addAll(msgHead,generateHyperLink(message));
-        else
-          wholeMessage.getChildren().addAll(msgHead,imageview);
-      }else
-        wholeMessage.getChildren().addAll(msgHead,generateHyperLink(message));
-    }else{
-      var text = new Text(message);
-      text.setFill(Color.web(color));
-      wholeMessage.getChildren().addAll(msgHead,text);
-    }
+    var msg = node.path("message");
+    placeNodesByJsonNode(msg, wholeMessage);
 
     if (nickname.isMissingNode())
       wholeMessage.setBackground(new Background(new BackgroundFill(Color.web("#b3e6b3"), new CornerRadii(5), Insets.EMPTY)));
@@ -64,5 +53,35 @@ public class CenterPane extends ScrollPane {
     var hyperlink = new Hyperlink(address);
     hyperlink.setOnAction(e -> Application.hostServices.showDocument(address));
     return hyperlink;
+  }
+
+  private void placeNodesByJsonNode(JsonNode json, VBox wholeMessage){
+    switch (json.getNodeType()){
+      case STRING -> {
+        var message = json.asText("").trim();
+        if(message.startsWith("http")){
+          if(message.endsWith("png")||message.endsWith("jpg")||message.endsWith("jpeg")||message.endsWith("gif")){
+            var imageview = new ImageView(message);
+            if(imageview.getImage().isError())
+              wholeMessage.getChildren().add(generateHyperLink(message));
+            else
+              wholeMessage.getChildren().add(imageview);
+          }else
+            wholeMessage.getChildren().add(generateHyperLink(message));
+        }else{
+          wholeMessage.getChildren().add(new Text(message));
+        }
+      }
+      case ARRAY -> {
+        for(int i=0;i<json.size();i++){
+          var jsonNode = json.get(i).path("message");
+          if(jsonNode.isMissingNode())
+            placeNodesByJsonNode(json.get(i), wholeMessage);
+          else
+            placeNodesByJsonNode(json.get(i).path("message"), wholeMessage);
+        }
+      }
+      default -> wholeMessage.getChildren().add(new Text(json.asText()));
+    };
   }
 }
