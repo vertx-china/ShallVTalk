@@ -67,7 +67,8 @@ public class CenterPane extends ScrollPane {
               pane.getChildren().add(generateHyperLink(message));
             else {
               imageview.setPreserveRatio(true);
-              imageview.setFitWidth(this.getWidth() - 50);
+              if(this.getWidth() - 50 < imageview.getImage().getWidth())
+                imageview.setFitWidth(this.getWidth() - 50);
               pane.getChildren().add(imageview);
             }
           }else
