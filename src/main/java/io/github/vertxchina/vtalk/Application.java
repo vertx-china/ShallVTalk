@@ -27,8 +27,8 @@ public class Application extends javafx.application.Application {
   }
 
   public static void main(String[] args) {
-    GLOBAL_FONT = Font.loadFont(Application.class.getResourceAsStream("/font/zcool.ttf"), 12);
-    GLOBAL_FONT_FAMILY = "-fx-font-family: "+GLOBAL_FONT.getFamily();
+    GLOBAL_FONT = Font.loadFont(Application.class.getResourceAsStream("/font/SourceHanSerifCN-VF.ttf"), 12);
+    GLOBAL_FONT_FAMILY = "-fx-font-family: \""+GLOBAL_FONT.getFamily()+"\"";
     launch(Application.class, args);
   }
 }
