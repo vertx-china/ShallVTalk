@@ -4,9 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.github.vertxchina.vtalk.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.geometry.VPos;
-import javafx.scene.Parent;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
@@ -45,7 +43,7 @@ public class CenterPane extends ScrollPane {
     wholeMessage.getChildren().addAll(msgHead);
 
     var msg = node.path("message");
-    placeNodesByJsonNode(msg, wholeMessage);
+    placeNodesOnPane(msg, wholeMessage);
 
     if (nickname.isMissingNode())
       wholeMessage.setBackground(new Background(new BackgroundFill(Color.web("#b3e6b3"), new CornerRadii(5), Insets.EMPTY)));
@@ -58,21 +56,35 @@ public class CenterPane extends ScrollPane {
     return hyperlink;
   }
 
-  private void placeNodesByJsonNode(JsonNode json, Pane wholeMessage){
+  private void placeNodesOnPane(JsonNode json, Pane pane){
     switch (json.getNodeType()){
       case STRING -> {
-        var message = json.asText("").trim();
+        var message = json.asText("");
         if(message.startsWith("http")){
           if(message.endsWith("png")||message.endsWith("jpg")||message.endsWith("jpeg")||message.endsWith("gif")){
             var imageview = new ImageView(message);
             if(imageview.getImage().isError())
-              wholeMessage.getChildren().add(generateHyperLink(message));
+              pane.getChildren().add(generateHyperLink(message));
             else
-              wholeMessage.getChildren().add(imageview);
+              pane.getChildren().add(imageview);
           }else
-            wholeMessage.getChildren().add(generateHyperLink(message));
+            pane.getChildren().add(generateHyperLink(message));
         }else{
-          wholeMessage.getChildren().add(new Text(message));
+          if((pane instanceof FlowPane flowPane) && message.contains("\n")){
+            var msgs = message.split("\n");
+            for(int i=0;i<msgs.length;i++){
+              var msg = msgs[i];
+              var text = new Text(msg);
+              flowPane.getChildren().add(text);
+              if(i<msgs.length-1 || message.endsWith("\n")){
+                Region p = new Region();
+                p.setPrefSize(this.getWidth()- text.getWrappingWidth() - 50, 0.0);
+                flowPane.getChildren().add(p);
+              }
+            }
+          }else{
+            pane.getChildren().add(new Text(message));
+          }
         }
       }
       case ARRAY -> {
@@ -81,13 +93,13 @@ public class CenterPane extends ScrollPane {
         for(int i=0;i<json.size();i++){
           var jsonNode = json.get(i).path("message");
           if(jsonNode.isMissingNode())
-            placeNodesByJsonNode(json.get(i), flowPane);
+            placeNodesOnPane(json.get(i), flowPane);
           else
-            placeNodesByJsonNode(json.get(i).path("message"), flowPane);
+            placeNodesOnPane(json.get(i).path("message"), flowPane);
         }
-        wholeMessage.getChildren().add(flowPane);
+        pane.getChildren().add(flowPane);
       }
-      default -> wholeMessage.getChildren().add(new Text(json.asText()));
+      default -> pane.getChildren().add(new Text(json.asText()));
     };
   }
 }
