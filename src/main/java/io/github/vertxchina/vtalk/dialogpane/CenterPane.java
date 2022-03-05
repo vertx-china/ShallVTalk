@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.github.vertxchina.vtalk.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
+import javafx.scene.Parent;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
@@ -55,7 +58,7 @@ public class CenterPane extends ScrollPane {
     return hyperlink;
   }
 
-  private void placeNodesByJsonNode(JsonNode json, VBox wholeMessage){
+  private void placeNodesByJsonNode(JsonNode json, Pane wholeMessage){
     switch (json.getNodeType()){
       case STRING -> {
         var message = json.asText("").trim();
@@ -73,13 +76,16 @@ public class CenterPane extends ScrollPane {
         }
       }
       case ARRAY -> {
+        var flowPane = new FlowPane();
+        flowPane.setRowValignment(VPos.BASELINE);
         for(int i=0;i<json.size();i++){
           var jsonNode = json.get(i).path("message");
           if(jsonNode.isMissingNode())
-            placeNodesByJsonNode(json.get(i), wholeMessage);
+            placeNodesByJsonNode(json.get(i), flowPane);
           else
-            placeNodesByJsonNode(json.get(i).path("message"), wholeMessage);
+            placeNodesByJsonNode(json.get(i).path("message"), flowPane);
         }
+        wholeMessage.getChildren().add(flowPane);
       }
       default -> wholeMessage.getChildren().add(new Text(json.asText()));
     };
