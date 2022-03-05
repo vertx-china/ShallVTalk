@@ -61,7 +61,8 @@ public class CenterPane extends ScrollPane {
       case STRING -> {
         var message = json.asText("");
         if(message.startsWith("http")){
-          if(message.endsWith("png")||message.endsWith("jpg")||message.endsWith("jpeg")||message.endsWith("gif")){
+          if(message.toLowerCase().endsWith("png")||message.toLowerCase().endsWith("jpg")||
+              message.toLowerCase().endsWith("jpeg")||message.toLowerCase().endsWith("gif")){
             var imageview = new ImageView(message);
             if(imageview.getImage().isError())
               pane.getChildren().add(generateHyperLink(message));
