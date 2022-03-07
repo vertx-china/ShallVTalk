@@ -56,8 +56,43 @@ public class CenterPane extends ScrollPane {
     return hyperlink;
   }
 
+  private Hyperlink generateHyperLink(String text, String address){
+    var hyperlink = new Hyperlink(text);
+    hyperlink.setOnAction(e -> Application.hostServices.showDocument(address));
+    return hyperlink;
+  }
+
   private void placeNodesOnPane(JsonNode json, Pane pane){
     switch (json.getNodeType()){
+      case OBJECT -> {
+        var type = json.path("type").asText();
+        switch (type){
+          case "1","img","image" -> {
+            var url = json.path("url").asText("Image url is null.");
+            var imageview = new ImageView(url);
+            if(imageview.getImage().isError()){
+              if(url.startsWith("http"))
+                pane.getChildren().add(new Hyperlink(url));
+              else
+                pane.getChildren().add(new Text(url));
+            }else{
+              pane.getChildren().add(imageview);
+            }
+          }
+          case "2","url","link","hyperlink" -> {
+            var url = json.path("url").asText("URL is null.");
+            var content = json.path("content").asText(url);
+            pane.getChildren().add(generateHyperLink(content, url));
+          }
+          default -> {
+            var content = json.path("content").asText("null");
+            var color = json.path("color").asText("#000");
+            var text = new Text(content);
+            text.setFill(Color.web(color));
+            pane.getChildren().add(text);
+          }
+        }
+      }
       case STRING -> {
         var message = json.asText("");
         if(message.startsWith("http")){

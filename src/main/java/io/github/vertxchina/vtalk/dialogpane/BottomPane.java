@@ -45,10 +45,14 @@ public class BottomPane extends HBox {
             centerPane.appendChatHistory(sentJson.put("id","_"));
           }else{
             ObjectNode objectNode = mapper.createObjectNode();
-            objectNode.put("message", textarea.getText());
+            objectNode.put("content", textarea.getText());
             objectNode.put("color", toWebColorCode(colorPicker.getValue()));
-            sendJson(objectNode);
-            centerPane.appendChatHistory(objectNode.put("id","_"));
+
+            ObjectNode sentJson = mapper.createObjectNode();
+            sentJson.set("message", objectNode);
+
+            sendJson(sentJson);
+            centerPane.appendChatHistory(sentJson.put("id","_"));
           }
           textarea.clear();
         }
