@@ -99,9 +99,9 @@ public class CenterPane extends ScrollPane {
           var msg = message.toLowerCase().trim();
           if(msg.endsWith("png")||msg.endsWith("jpg")||
               msg.endsWith("jpeg")||msg.endsWith("gif")){
-            var imageview = new ImageView(message);
+            var imageview = new ImageView(message.trim());
             if(imageview.getImage().isError())
-              pane.getChildren().add(generateHyperLink(message));
+              pane.getChildren().add(generateHyperLink(message.trim()));
             else {
               imageview.setPreserveRatio(true);
               if(this.getWidth() - 50 < imageview.getImage().getWidth())
@@ -109,7 +109,7 @@ public class CenterPane extends ScrollPane {
               pane.getChildren().add(imageview);
             }
           }else
-            pane.getChildren().add(generateHyperLink(message));
+            pane.getChildren().add(generateHyperLink(message.trim()));
         }else{
           if((pane instanceof FlowPane flowPane) && message.contains("\n")){
             var msgs = message.split("\n");
