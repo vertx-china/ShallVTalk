@@ -68,7 +68,7 @@ public class CenterPane extends ScrollPane {
         var type = json.path("type").asText();
         switch (type){
           case "1","img","image" -> {
-            var url = json.path("url").asText("Image url is null.");
+            var url = json.path("url").asText("Image url is null.").trim();
             var imageview = new ImageView(url);
             if(imageview.getImage().isError()){
               if(url.startsWith("http"))
@@ -80,7 +80,7 @@ public class CenterPane extends ScrollPane {
             }
           }
           case "2","url","link","hyperlink" -> {
-            var url = json.path("url").asText("URL is null.");
+            var url = json.path("url").asText("URL is null.").trim();
             var content = json.path("content").asText(url);
             pane.getChildren().add(generateHyperLink(content, url));
           }
