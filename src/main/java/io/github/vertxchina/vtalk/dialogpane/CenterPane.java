@@ -1,6 +1,7 @@
 package io.github.vertxchina.vtalk.dialogpane;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import io.github.vertxchina.util.Common;
 import io.github.vertxchina.vtalk.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -13,11 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-
 public class CenterPane extends ScrollPane {
-  DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z");
   TextFlow chatHistory = new TextFlow();
 
   public CenterPane() {
@@ -29,7 +26,9 @@ public class CenterPane extends ScrollPane {
 
   public void appendChatHistory(JsonNode node) {
     var nickname = node.path("nickname");
-    var time = node.path("time").asText(ZonedDateTime.now().format(timeFormatter));
+
+    var time = node.path("time").asText();
+    time = Common.HandlerDate(time);
 
     var wholeMessage = new VBox();
     wholeMessage.setPadding(new Insets(5));
@@ -106,6 +105,6 @@ public class CenterPane extends ScrollPane {
         pane.getChildren().add(flowPane);
       }
       default -> pane.getChildren().add(new Text(json.asText()));
-    };
+    }
   }
 }
