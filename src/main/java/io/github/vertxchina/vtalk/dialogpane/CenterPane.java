@@ -96,7 +96,7 @@ public class CenterPane extends ScrollPane {
       case STRING -> {
         var message = json.asText("");
         if(message.startsWith("http")){
-          var msg = message.toLowerCase();
+          var msg = message.toLowerCase().trim();
           if(msg.endsWith("png")||msg.endsWith("jpg")||
               msg.endsWith("jpeg")||msg.endsWith("gif")){
             var imageview = new ImageView(message);
