@@ -25,6 +25,15 @@
                 <gluonfx.target>linux-aarch64</gluonfx.target>
             </properties>
         </profile>
+        <profile>
+            <id>desktop</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <gluonfx.target>host</gluonfx.target>
+            </properties>
+        </profile>
     </profiles>
 
     <dependencies>
@@ -94,6 +103,7 @@
                 <configuration>
                     <verbose>true</verbose>
                     <target>${gluonfx.target}</target>
+                    <nativeImageArgs>-Dfile.encoding=UTF-8</nativeImageArgs>
                     <mainClass>${module.name}/${main.class}</mainClass>
                 </configuration>
             </plugin>
