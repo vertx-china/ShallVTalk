@@ -11,3 +11,4 @@ macOSX（需执行以下命令移除苹果隔离：sudo xattr -r -d com.apple.qu
 Linux（需要chmod +x）  
 目前AOT支持的平台有：  
 树莓派（64位，需要chmod +x）   
+Windows（64位，提供exe和msi两种格式文件）   
