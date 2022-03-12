@@ -63,8 +63,8 @@ jobs:
 
       - name: Copy native bundles to staging
         run: |
-          cp -r target/gluonfx/x86_64-windows/ShallVTalk.exe staging
-          cp -r target/gluonfx/x86_64-windows/ShallVTalk-1.0.msi staging
+          cp -r target\gluonfx\x86_64-windows\ShallVTalk.exe staging
+          cp -r target\gluonfx\x86_64-windows\ShallVTalk-1.0.msi staging
       - name: Upload
         uses: actions/upload-artifact@v2
         with:

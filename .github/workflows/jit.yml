@@ -20,12 +20,16 @@ jobs:
           java-version: '17'
           distribution: 'adopt-hotspot'
           check-latest: true
+      - name: Make staging directory
+        run: mkdir staging
       - name: Build with Maven
         run: mvn javafx:jlink
+      - name: Copy image to staging
+        run: cp -r target/image/* staging
       - uses: actions/upload-artifact@v2
         with:
           name: VTalk-Linux
-          path: /home/runner/work/ShallVTalk/ShallVTalk/target/app.zip
+          path: stage
           retention-days: 1
 
   mac-x64-build:
@@ -40,12 +44,16 @@ jobs:
           java-version: '17'
           distribution: 'adopt-hotspot'
           check-latest: true
+      - name: Make staging directory
+        run: mkdir staging
       - name: Build with Maven
         run: mvn javafx:jlink
+      - name: Copy image to staging
+        run: cp -r target/image/* staging
       - uses: actions/upload-artifact@v2
         with:
           name: VTalk-macOSX
-          path: /Users/runner/work/ShallVTalk/ShallVTalk/target/app.zip
+          path: stage
           retention-days: 1
 
   win-x64-build:
@@ -60,10 +68,14 @@ jobs:
           java-version: '17'
           distribution: 'adopt-hotspot'
           check-latest: true
+      - name: Make staging directory
+        run: mkdir staging
       - name: Build with Maven
         run: mvn javafx:jlink
+      - name: Copy image to staging
+        run: cp -r target\image\* staging
       - uses: actions/upload-artifact@v2
         with:
           name: VTalk-Windows
-          path: D:\a\ShallVTalk\ShallVTalk\target\app.zip
+          path: stage
           retention-days: 1
