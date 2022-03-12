@@ -84,8 +84,6 @@
                         <configuration>
                             <mainClass>${module.name}/${main.class}</mainClass>
                             <launcher>VTalk</launcher>
-<!--                            <jlinkZipName>app</jlinkZipName>-->
-<!--                            <jlinkImageName>app</jlinkImageName>-->
                             <noManPages>true</noManPages>
                             <stripDebug>true</stripDebug>
                             <noHeaderFiles>true</noHeaderFiles>
