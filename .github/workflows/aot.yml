@@ -1,4 +1,4 @@
-name: VTalk AOT build(generated native code)
+name: AOT build(generated native code)
 
 on:
   push:
@@ -9,9 +9,7 @@ on:
 jobs:
 
   raspbarry-pi-build:
-
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
 
@@ -37,6 +35,39 @@ jobs:
       - name: Upload
         uses: actions/upload-artifact@v2
         with:
-          name: VTalk-Raspberry-Pi
+          name: ShallVTalk-Raspberry-Pi
+          path: staging
+          retention-days: 1
+
+  windows-build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.0.2
+
+      - name: Visual Studio shell
+        uses: egor-tensin/vs-shell@v1
+
+      - name: Setup Gluon's GraalVM
+        uses: gluonhq/setup-graalvm@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Make staging directory
+        run: mkdir staging
+
+      - name: Gluon Build and Package
+        run: mvn -Pdesktop gluonfx:build gluonfx:package
+
+      - name: Copy native bundles to staging
+        run: |
+          cp -r target/gluonfx/x86_64-windows/ShallVTalk.exe staging
+          cp -r target/gluonfx/x86_64-windows/ShallVTalk-1.0.msi staging
+      - name: Upload
+        uses: actions/upload-artifact@v2
+        with:
+          name: ShallVTalk-Windows
           path: staging
           retention-days: 1
