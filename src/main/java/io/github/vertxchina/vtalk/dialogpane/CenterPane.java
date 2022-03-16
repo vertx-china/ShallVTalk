@@ -112,7 +112,23 @@ public class CenterPane extends ScrollPane {
       }
       case STRING -> {
         var message = json.asText("");
-        if(message.startsWith("http")){
+
+        if(message.startsWith("data:image/")&&message.contains("base64,")){
+          //base64 encoded image string
+          var commaIndex = message.indexOf(",");
+          var msg = message.substring(commaIndex+1);
+          byte[] base64 = Base64.getMimeDecoder().decode(msg);
+          var image = new Image(new ByteArrayInputStream(base64));
+          if(image.isError()){
+            pane.getChildren().add(new Text(message));
+          }else{
+            var imageview = new ImageView(image);
+            imageview.setPreserveRatio(true);
+            if(this.getWidth() - 50 < imageview.getImage().getWidth())
+              imageview.setFitWidth(this.getWidth() - 50);
+            pane.getChildren().add(imageview);
+          }
+        }else if(message.startsWith("http")){
           var msg = message.toLowerCase().trim();
           if(msg.endsWith("png")||msg.endsWith("jpg")||
               msg.endsWith("jpeg")||msg.endsWith("gif")){
