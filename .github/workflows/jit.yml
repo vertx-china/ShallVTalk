@@ -17,7 +17,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          java-version: '17'
+          java-version: '18'
           distribution: 'adopt-hotspot'
           check-latest: true
       - name: Make staging directory
@@ -41,7 +41,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          java-version: '17'
+          java-version: '18'
           distribution: 'adopt-hotspot'
           check-latest: true
       - name: Make staging directory
@@ -65,7 +65,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          java-version: '17'
+          java-version: '18'
           distribution: 'adopt-hotspot'
           check-latest: true
       - name: Make staging directory
