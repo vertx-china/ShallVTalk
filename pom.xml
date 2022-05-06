@@ -12,7 +12,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.8.2</junit.version>
-        <javafx.version>17.0.2</javafx.version>
+        <javafx.version>18.0.1</javafx.version>
         <gluonfx.maven.plugin.version>1.0.12</gluonfx.maven.plugin.version>
         <module.name>io.github.vertxchina.vtalk</module.name>
         <main.class>io.github.vertxchina.vtalk.Application</main.class>
@@ -45,7 +45,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.13.1</version>
+            <version>2.13.2.2</version>
         </dependency>
 
         <dependency>
