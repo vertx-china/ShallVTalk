@@ -1,6 +1,5 @@
 package io.github.vertxchina.vtalk.dialogpane;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import javafx.scene.control.ColorPicker;
