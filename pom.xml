@@ -13,7 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.9.0</junit.version>
         <javafx.version>19</javafx.version>
-        <gluonfx.maven.plugin.version>1.0.14</gluonfx.maven.plugin.version>
+        <gluonfx.maven.plugin.version>1.0.15</gluonfx.maven.plugin.version>
         <module.name>io.github.vertxchina.vtalk</module.name>
         <main.class>io.github.vertxchina.vtalk.Application</main.class>
     </properties>
