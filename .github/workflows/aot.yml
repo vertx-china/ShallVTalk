@@ -11,7 +11,7 @@ jobs:
   raspbarry-pi-build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup Gluon's GraalVM
         uses: gluonhq/setup-graalvm@master
@@ -33,7 +33,7 @@ jobs:
         run: cp -r target/gluonfx/aarch64-linux/ShallVTalk* staging
 
       - name: Upload
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ShallVTalk-Raspberry-Pi
           path: staging
@@ -42,7 +42,7 @@ jobs:
   windows-build:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
@@ -66,7 +66,7 @@ jobs:
           cp -r target\gluonfx\x86_64-windows\ShallVTalk.exe staging
           cp -r target\gluonfx\x86_64-windows\ShallVTalk-1.0.msi staging
       - name: Upload
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ShallVTalk-Windows
           path: staging
